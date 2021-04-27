@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from loguru import logger
 
-from user_image_api.router import welcome, user
+from user_image_api.router import welcome, user, image
 
 from user_image_api.config import VERSION, DESCRIPTION, TITLE
 
@@ -17,6 +17,7 @@ def run_api():
 
     api.include_router(welcome.router, tags=['Welcome to api user image'])
     api.include_router(user.router, tags=['Add and Update user'])
+    api.include_router(image.router, tags=['Add user image'])
 
     logger.info("API is Works!")
     return api
