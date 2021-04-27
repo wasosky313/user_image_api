@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from user_image_api.exception.base import UniqueException
 from user_image_api.model.database import Image
-from user_image_api.model.schema import ImageInsertIn
+from user_image_api.model.schema import ImageInsertIn, ImageGetIn
 from user_image_api.repository.image import ImageRepository
 
 
@@ -19,3 +19,8 @@ class ImageService:
             return image.id
         except IntegrityError:
             raise UniqueException()
+
+    def get(self, payload: ImageGetIn):
+        pass
+
+

@@ -23,3 +23,12 @@ class ImageInsertIn(BaseModel):
 
 class ImageOutput(BaseModel):
     image_id: int
+
+
+class ImageGetIn(BaseModel):
+   # user_id: int
+    image_id: int
+
+
+class ImageGetOutput(BaseModel):
+    image_base64: str
