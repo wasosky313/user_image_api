@@ -26,7 +26,7 @@ class ImageOutput(BaseModel):
 
 
 class ImageGetIn(BaseModel):
-   # user_id: int
+    user_id: int
     image_id: int
 
 

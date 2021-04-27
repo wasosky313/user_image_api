@@ -21,6 +21,7 @@ class ImageService:
             raise UniqueException()
 
     def get(self, payload: ImageGetIn):
-        pass
+        image = self.image_repo.get_image(payload.image_id, payload.user_id)
+        return image.image
 
 
