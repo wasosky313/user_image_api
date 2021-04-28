@@ -20,8 +20,8 @@ class ImageService:
         except IntegrityError:
             raise UniqueException()
 
-    def get(self, payload: ImageGetIn):
-        image = self.image_repo.get_image(payload.image_id, payload.user_id)
-        return image.image
+    def get(self, user_id, image_id):
+        model_image = self.image_repo.find_image_by_id_and_user(user_id, image_id)
+        return model_image.image
 
 

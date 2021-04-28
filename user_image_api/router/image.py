@@ -20,8 +20,9 @@ def add(payload: ImageInsertIn, session: Session = Depends(get_db)):
     return ImageOutput(image_id=image_id)
 
 
-@router.post(f'/v{VERSION}/get-user-image', status_code=200, summary="Get User Image", response_model=ImageGetOutput)
-def add(payload: ImageGetIn, session: Session = Depends(get_db)):
+@router.get(f'/v{VERSION}/get-user-image/<user_id>/<image_id>', status_code=200, summary="Get User Image",
+            response_model=ImageGetOutput)
+def get_user_image(user_id, image_id, session: Session = Depends(get_db)):
     service = image.ImageService(session)
-    image64 = service.get(payload)
+    image64 = service.get(user_id, image_id)
     return ImageGetOutput(image_base64=image64)
