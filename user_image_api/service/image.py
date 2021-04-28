@@ -1,10 +1,11 @@
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from user_image_api.exception.base import UniqueException, SQLAlchemyException, NoExistException
+from user_image_api.exception.base import UniqueException, SQLAlchemyException, NoExistException, Base64Exception
 from user_image_api.model.database import Image
-from user_image_api.model.schema import ImageInsertIn, UserImageUpdateInput
+from user_image_api.model.schema import UserImageUpdateInput, ImageInsertInput
 from user_image_api.repository.image import ImageRepository
+from user_image_api.util import is_base_64
 
 
 class ImageService:
@@ -12,7 +13,8 @@ class ImageService:
     def __init__(self, session: Session):
         self.image_repo = ImageRepository(session)
 
-    def add(self, payload: ImageInsertIn):
+    def add_image(self, payload: ImageInsertInput):
+        is_base_64(payload.image_base64)
         try:
             image_model = Image(payload.image_base64, payload.thumbnails, payload.user_id)
             image = self.image_repo.save(image_model)
@@ -20,7 +22,7 @@ class ImageService:
         except IntegrityError:
             raise NoExistException()
 
-    def get(self, user_id, image_id):
+    def get_image(self, user_id, image_id):
         try:
             model_image = self.image_repo.find_image_by_id_and_user(user_id, image_id)
             if model_image:
@@ -32,7 +34,7 @@ class ImageService:
             print(err)
             raise SQLAlchemyException()
 
-    def update(self, payload: UserImageUpdateInput):
+    def update_image(self, payload: UserImageUpdateInput):
         try:
             self.image_repo.update_user_image_by_user_and_image_id(
                 payload.user_id,
@@ -42,7 +44,7 @@ class ImageService:
         except IntegrityError:
             raise UniqueException()
 
-    def delete(self, user_id, image_id):
+    def delete_image(self, user_id, image_id):
         self.image_repo.del_user_image_by_ids(user_id, image_id)
 
     def get_thumb(self, user_id):

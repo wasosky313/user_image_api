@@ -28,3 +28,9 @@ class NoExistException(ApiException):
     def __init__(self):
         message = 'NOT FOUND: THE VALUE NO EXIST IN THE DATABASE'
         super().__init__(409, message)
+
+
+class Base64Exception(ApiException):
+    def __init__(self):
+        message = 'WRONG BASE64 FORMAT'
+        super().__init__(401, message)

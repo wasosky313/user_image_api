@@ -16,7 +16,7 @@ class UserOutput(BaseModel):
 
 
 # ---image ---
-class ImageInsertIn(BaseModel):
+class ImageInsertInput(BaseModel):
     user_id: int
     image_base64: str
     thumbnails: str
@@ -26,9 +26,9 @@ class ImageOutput(BaseModel):
     image_id: int
 
 
-class ImageGetIn(BaseModel):
-    user_id: int
-    image_id: int
+# class ImageGetIn(BaseModel):
+#     user_id: int
+#     image_id: int
 
 
 class ImageGetOutput(BaseModel):
