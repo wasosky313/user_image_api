@@ -1,4 +1,3 @@
-from typing import List
 
 from pydantic import BaseModel
 
@@ -36,11 +35,6 @@ class ImageGetOutput(BaseModel):
     image_base64: str
 
 
-class ImageThumbUserListOut(BaseModel):
-    list_users_image_id: List
-    thumb64: str
-
-
 class UserImageUpdateInput(BaseModel):
     user_id: int
     image_id: int
@@ -56,3 +50,5 @@ class DelUserImageInput(BaseModel):
     image_id: int
 
 
+class ThumbUserListOutput(BaseModel):
+    list_user_id_thumb: list

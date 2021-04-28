@@ -1,4 +1,3 @@
-
 from loguru import logger
 
 
@@ -22,4 +21,10 @@ class UniqueException(ApiException):
 class SQLAlchemyException(ApiException):
     def __init__(self):
         message = "SQLAlchemy ERROR: THE VALUE CAN'T BE EMPTY"
+        super().__init__(409, message)
+
+
+class NoExistException(ApiException):
+    def __init__(self):
+        message = 'NOT FOUND: THE VALUE NO EXIST IN THE DATABASE'
         super().__init__(409, message)
