@@ -20,7 +20,7 @@ class UniqueException(ApiException):
 
 class SQLAlchemyException(ApiException):
     def __init__(self):
-        message = "SQLAlchemy ERROR: THE VALUE CAN'T BE EMPTY"
+        message = "SQLAlchemy ERROR: COULD NOT CONNECT TO SERVER"
         super().__init__(409, message)
 
 

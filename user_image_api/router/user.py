@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 
 from user_image_api.config import VERSION
 from user_image_api.config.database import get_db
-from user_image_api.model.schema import UserOutput, UserInsertInput, UserUpdateInput
+from user_image_api.model.schema import (UserInsertInput, UserOutput,
+                                         UserUpdateInput)
 from user_image_api.service import user
 
 router = APIRouter()

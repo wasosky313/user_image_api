@@ -9,3 +9,7 @@ def is_base_64(image_base64: str):
         base64.b64decode(image_base64)
     except binascii.Error:
         raise Base64Exception()
+
+
+def get_thumbnails(image_base64: str):
+    return "QWERTYUI"

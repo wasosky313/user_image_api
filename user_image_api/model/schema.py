@@ -19,7 +19,6 @@ class UserOutput(BaseModel):
 class ImageInsertInput(BaseModel):
     user_id: int
     image_base64: str
-    thumbnails: str
 
 
 class ImageOutput(BaseModel):
@@ -51,4 +50,5 @@ class DelUserImageInput(BaseModel):
 
 
 class ThumbUserListOutput(BaseModel):
-    list_user_id_thumb: list
+    user_id: int
+    thumbnails: list

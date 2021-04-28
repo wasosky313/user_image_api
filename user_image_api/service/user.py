@@ -1,7 +1,7 @@
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from user_image_api.exception.base import UniqueException
+from user_image_api.exception.base import SQLAlchemyException, UniqueException
 from user_image_api.model.database import User
 from user_image_api.model.schema import UserInsertInput, UserUpdateInput
 from user_image_api.repository.user import UserRepository
@@ -19,6 +19,8 @@ class UserService:
             return user.id
         except IntegrityError:
             raise UniqueException()
+        except SQLAlchemyError:
+            raise SQLAlchemyException()
 
     def update(self, payload: UserUpdateInput):
         try:
@@ -29,3 +31,5 @@ class UserService:
             )
         except IntegrityError:
             raise UniqueException()
+        except SQLAlchemyError:
+            raise SQLAlchemyException()

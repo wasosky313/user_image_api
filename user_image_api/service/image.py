@@ -1,11 +1,14 @@
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from user_image_api.exception.base import UniqueException, SQLAlchemyException, NoExistException, Base64Exception
+from user_image_api.exception.base import (Base64Exception, NoExistException,
+                                           SQLAlchemyException,
+                                           UniqueException)
 from user_image_api.model.database import Image
-from user_image_api.model.schema import UserImageUpdateInput, ImageInsertInput
+from user_image_api.model.schema import (ImageInsertInput, ThumbUserListOutput,
+                                         UserImageUpdateInput)
 from user_image_api.repository.image import ImageRepository
-from user_image_api.util import is_base_64
+from user_image_api.util import get_thumbnails, is_base_64
 
 
 class ImageService:
@@ -16,11 +19,13 @@ class ImageService:
     def add_image(self, payload: ImageInsertInput):
         is_base_64(payload.image_base64)
         try:
-            image_model = Image(payload.image_base64, payload.thumbnails, payload.user_id)
+            image_model = Image(payload.image_base64, get_thumbnails(payload.image_base64), payload.user_id)
             image = self.image_repo.save(image_model)
             return image.id
         except IntegrityError:
             raise NoExistException()
+        except SQLAlchemyError:
+            raise SQLAlchemyException()
 
     def get_image(self, user_id, image_id):
         try:
@@ -30,8 +35,7 @@ class ImageService:
             return "Empty Value, check user_id or image_id"
         except IntegrityError:
             raise UniqueException()
-        except SQLAlchemyError as err:
-            print(err)
+        except SQLAlchemyError:
             raise SQLAlchemyException()
 
     def update_image(self, payload: UserImageUpdateInput):
@@ -43,10 +47,18 @@ class ImageService:
             )
         except IntegrityError:
             raise UniqueException()
+        except SQLAlchemyError:
+            raise SQLAlchemyException()
 
     def delete_image(self, user_id, image_id):
-        self.image_repo.del_user_image_by_ids(user_id, image_id)
+        try:
+            self.image_repo.del_user_image_by_ids(user_id, image_id)
+        except SQLAlchemyError:
+            raise SQLAlchemyException()
 
-    def get_thumb(self, user_id):
-        model_image = self.image_repo.find_thumb_by_user_id(user_id)
-        return model_image
+    def get_thumbnails(self, user_id):
+        try:
+            thumbnails = self.image_repo.find_thumb_by_user_id(user_id)
+            return ThumbUserListOutput(user_id=user_id, thumbnails=thumbnails)
+        except SQLAlchemyError:
+            raise SQLAlchemyException()

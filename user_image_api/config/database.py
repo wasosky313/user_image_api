@@ -6,8 +6,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.schema import CreateSchema
 
-from user_image_api.config import DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_SCHEMA, DB_USER
-
+from user_image_api.config import (DB_HOST, DB_NAME, DB_PASS, DB_PORT,
+                                   DB_SCHEMA, DB_USER)
 
 DB_URL = f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 
@@ -24,7 +24,8 @@ def config_database_schema():
             engine.execute(CreateSchema(DB_SCHEMA))
         Base.metadata.create_all(bind=engine, checkfirst=True)
     except SQLAlchemyError as err:
-        logger.error(f"[-] SQLALCHEMY: ERROR DETECTED IN THE ORM OR DATABASE. {err}")
+        logger.error(
+            f"[-] SQLALCHEMY: ERROR DETECTED IN THE ORM OR DATABASE. {err}")
 
 
 def get_db():

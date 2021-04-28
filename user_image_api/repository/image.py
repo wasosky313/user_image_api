@@ -1,3 +1,5 @@
+from sqlalchemy import func
+
 from user_image_api.model.database import Image
 from user_image_api.repository import RepositoryBase
 
@@ -5,7 +7,7 @@ from user_image_api.repository import RepositoryBase
 class ImageRepository(RepositoryBase):
 
     def find_thumb_by_user_id(self, user_id):
-        return self.session.query(Image.user_id, Image.thumbnails).filter(Image.user_id == user_id).all()
+        return self.session.query(Image.thumbnails).filter(Image.user_id == user_id).all()
 
     def find_image_by_id_and_user(self, user_id, image_id):
         return self.session.query(Image).filter(Image.user_id == user_id, Image.id == image_id).first()
@@ -17,4 +19,3 @@ class ImageRepository(RepositoryBase):
     def del_user_image_by_ids(self, user_id, image_id):
         self.session.query(Image).filter(Image.user_id == user_id, Image.id == image_id).delete()
         self.session.commit()
-

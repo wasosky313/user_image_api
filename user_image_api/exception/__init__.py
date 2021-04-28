@@ -14,7 +14,8 @@ def config_exception(api):
     @api.exception_handler(HTTPException)
     def http_exception(request: Request, exception: HTTPException):
         message = {404: "Address not found", 405: "Method not allowed"}
-        return JSONResponse(status_code=exception.status_code, content={"message": message[exception.status_code]})
+        return JSONResponse(
+            status_code=exception.status_code, content={"message": message[exception.status_code]})
 
     @api.exception_handler(RequestValidationError)
     def validation_exception(request, exception):
