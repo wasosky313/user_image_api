@@ -5,10 +5,9 @@ from sqlalchemy.orm import Session
 from user_image_api.config import VERSION
 
 from user_image_api.config.database import get_db
-from user_image_api.model.schema import ImageOutput, ImageInsertIn, ImageGetOutput, ImageGetIn
+from user_image_api.model.schema import ImageOutput, ImageInsertIn, ImageGetOutput, ImageThumbUserListOut, \
+    UserImageUpdateInput, UserImageUpdateOut
 from user_image_api.service import image
-
-from user_image_api.repository.image import ImageRepository
 
 router = APIRouter()
 
@@ -26,3 +25,20 @@ def get_user_image(user_id, image_id, session: Session = Depends(get_db)):
     service = image.ImageService(session)
     image64 = service.get(user_id, image_id)
     return ImageGetOutput(image_base64=image64)
+
+
+# Unfinished, see later
+@router.get(f'/v{VERSION}/list-user-images-thumb/<user_id>', status_code=200, summary="list User Images Thumb",
+            response_model=ImageThumbUserListOut)
+def list_user_images_thumb(user_id, session: Session = Depends(get_db)):
+    service = image.ImageService(session)
+    thumb_list = service.get_thumb(user_id)
+    return ImageThumbUserListOut(list_users_image_id=thumb_list)
+
+
+@router.put(f'/v{VERSION}/update-user-image', status_code=200, summary="Update User image",
+            response_model=UserImageUpdateOut)
+def update_user_image(payload: UserImageUpdateInput, session: Session = Depends(get_db)):
+    service = image.ImageService(session)
+    service.update(payload)
+    return UserImageUpdateOut(user_id=payload.user_id)

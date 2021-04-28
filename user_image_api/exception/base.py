@@ -17,3 +17,9 @@ class UniqueException(ApiException):
     def __init__(self):
         message = 'UNIQUE CONSTRAINT: THE VALUE ALREADY EXISTS IN THE DATABASE'
         super().__init__(409, message)
+
+
+class SQLAlchemyException(ApiException):
+    def __init__(self):
+        message = "SQLAlchemy ERROR: THE VALUE CAN'T BE EMPTY"
+        super().__init__(409, message)
