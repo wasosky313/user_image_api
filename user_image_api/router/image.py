@@ -6,7 +6,7 @@ from user_image_api.config import VERSION
 
 from user_image_api.config.database import get_db
 from user_image_api.model.schema import ImageOutput, ImageInsertIn, ImageGetOutput, ImageThumbUserListOut, \
-    UserImageUpdateInput, UserImageUpdateOut
+    UserImageUpdateInput, UserImageUpdateOut, DelUserImageInput
 from user_image_api.service import image
 
 router = APIRouter()
@@ -36,9 +36,15 @@ def list_user_images_thumb(user_id, session: Session = Depends(get_db)):
     return ImageThumbUserListOut(list_users_image_id=thumb_list)
 
 
-@router.put(f'/v{VERSION}/update-user-image', status_code=200, summary="Update User image",
-            response_model=UserImageUpdateOut)
+@router.put(f'/v{VERSION}/update-user-image', status_code=200, summary="Update User image")
 def update_user_image(payload: UserImageUpdateInput, session: Session = Depends(get_db)):
     service = image.ImageService(session)
     service.update(payload)
-    return UserImageUpdateOut(user_id=payload.user_id)
+    return "User Image Updated"
+
+
+@router.delete(f'/v{VERSION}/delete-user-image', status_code=200, summary="Delete User Image")
+def delete_user_image(payload: DelUserImageInput, session: Session = Depends(get_db)):
+    service = image.ImageService(session)
+    service.delete(payload.user_id, payload.image_id)
+    return "User Image Deleted"

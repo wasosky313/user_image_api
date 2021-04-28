@@ -14,3 +14,7 @@ class ImageRepository(RepositoryBase):
     def update_user_image_by_user_and_image_id(self, user_id: int, image_id: int, values: dict):
         self.session.query(Image).filter(Image.user_id == user_id, Image.id == image_id).update(values)
         self.session.commit()
+
+    def del_user_image_by_ids(self, user_id, image_id):
+        self.session.query(Image).filter(Image.user_id == user_id, Image.id == image_id).delete()
+        self.session.commit()

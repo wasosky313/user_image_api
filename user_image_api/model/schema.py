@@ -50,3 +50,9 @@ class UserImageUpdateInput(BaseModel):
 class UserImageUpdateOut(BaseModel):
     user_id: int
 
+
+class DelUserImageInput(BaseModel):
+    user_id: int
+    image_id: int
+
+

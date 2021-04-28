@@ -45,3 +45,6 @@ class ImageService:
             )
         except IntegrityError:
             raise UniqueException()
+
+    def delete(self, user_id, image_id):
+        self.image_repo.del_user_image_by_ids(user_id, image_id)
