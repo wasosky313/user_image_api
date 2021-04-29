@@ -14,13 +14,13 @@ class UserService:
     def __init__(self, session: Session):
         self.user_repo = UserRepository(session)
 
-    def add(self, payload: UserInsertInput):
+    def add(self, payload: UserInsertInput) -> User:
         try:
             user_model = User(payload.user_name)
             user = self.user_repo.save(user_model)
-            return user.user_name
+            return user
         except SQLAlchemyError:
-            raise SQLAlchemyException()
+            raise UniqueException()
         except IntegrityError:
             raise NoExistException()
 

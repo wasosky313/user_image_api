@@ -21,7 +21,8 @@ prod_requirements = [
     'loguru==0.5.3',
     'SQLAlchemy==1.3.19',
     'psycopg2-binary==2.8.6',
-    'Pillow==8.2.0'
+    'Pillow==8.2.0',
+    'pika==1.2.0'
 ]
 
 try:

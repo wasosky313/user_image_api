@@ -27,3 +27,5 @@ user_image_api/service/__init__.py
 user_image_api/service/image.py
 user_image_api/service/user.py
 user_image_api/util/__init__.py
+user_image_api/worker/__init__.py
+user_image_api/worker/send_queue.py

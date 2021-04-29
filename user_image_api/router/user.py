@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, BackgroundTasks
 from sqlalchemy.orm import Session
 
 from user_image_api.config import VERSION
@@ -6,6 +6,7 @@ from user_image_api.config.database import get_db
 from user_image_api.model.schema import (UserInsertInput, UserOutput,
                                          UserUpdateInput)
 from user_image_api.service import user
+from user_image_api.task.rabbitmq import publish_message
 
 router = APIRouter()
 
@@ -13,12 +14,12 @@ router = APIRouter()
 @router.post(f'/v{VERSION}/add-user',
              status_code=201,
              summary="Add User",
-             response_model=UserOutput
-             )
-def add_user(payload: UserInsertInput, session: Session = Depends(get_db)):
+             response_model=UserOutput)
+def add_user(payload: UserInsertInput, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
     service = user.UserService(session)
-    usr_id = service.add(payload)
-    return UserOutput(user_id=usr_id)
+    user_model = service.add(payload)
+    background_tasks.add_task(publish_message, user_model.id, user_model.user_name, 0, "/add-user")
+    return UserOutput(user_id=user_model.id)
 
 
 @router.put(f'/v{VERSION}/update-user',
