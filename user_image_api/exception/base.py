@@ -34,3 +34,9 @@ class Base64Exception(ApiException):
     def __init__(self):
         message = 'WRONG BASE64 FORMAT'
         super().__init__(401, message)
+
+
+class TypeException(ApiException):
+    def __init__(self):
+        message = "ERROR: THE VALUE ISN'T int"
+        super().__init__(401, message)

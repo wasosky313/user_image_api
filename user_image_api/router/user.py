@@ -10,14 +10,21 @@ from user_image_api.service import user
 router = APIRouter()
 
 
-@router.post(f'/v{VERSION}/add-user', status_code=201, summary="Add User", response_model=UserOutput)
+@router.post(f'/v{VERSION}/add-user',
+             status_code=201,
+             summary="Add User",
+             response_model=UserOutput
+             )
 def add_user(payload: UserInsertInput, session: Session = Depends(get_db)):
     service = user.UserService(session)
     usr_id = service.add(payload)
     return UserOutput(user_id=usr_id)
 
 
-@router.put(f'/v{VERSION}/update-user', status_code=200, summary="Update User", response_model=UserOutput)
+@router.put(f'/v{VERSION}/update-user',
+            status_code=200,
+            summary="Update User",
+            response_model=UserOutput)
 def update_user(payload: UserUpdateInput, session: Session = Depends(get_db)):
     service = user.UserService(session)
     service.update(payload)

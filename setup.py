@@ -20,7 +20,8 @@ prod_requirements = [
     'pydantic==1.6.1',
     'loguru==0.5.3',
     'SQLAlchemy==1.3.19',
-    'psycopg2-binary==2.8.6'
+    'psycopg2-binary==2.8.6',
+    'Pillow==8.2.0'
 ]
 
 try:
@@ -37,7 +38,8 @@ try:
         match = re.search(r"^DESCRIPTION = ['\"]([^'\"]*)['\"]", v.read(), re.M)
         description = match.group(1)
 except AttributeError:
-    raise RuntimeError("Unable to find 'version', 'title' and 'description' from config/__init__.py.")
+    raise RuntimeError("Unable to find 'version', 'title' and "
+                       "'description' from config/__init__.py.")
 
 setup(
     name="user_image_api",

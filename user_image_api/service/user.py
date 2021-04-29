@@ -1,7 +1,9 @@
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from user_image_api.exception.base import SQLAlchemyException, UniqueException
+from user_image_api.exception.base import (NoExistException,
+                                           SQLAlchemyException,
+                                           UniqueException)
 from user_image_api.model.database import User
 from user_image_api.model.schema import UserInsertInput, UserUpdateInput
 from user_image_api.repository.user import UserRepository
@@ -16,11 +18,11 @@ class UserService:
         try:
             user_model = User(payload.user_name)
             user = self.user_repo.save(user_model)
-            return user.id
-        except IntegrityError:
-            raise UniqueException()
+            return user.user_name
         except SQLAlchemyError:
             raise SQLAlchemyException()
+        except IntegrityError:
+            raise NoExistException()
 
     def update(self, payload: UserUpdateInput):
         try:
