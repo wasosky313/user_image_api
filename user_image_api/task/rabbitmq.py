@@ -1,9 +1,8 @@
 
 import json
-import time
 import datetime
 
-from user_image_api.config.rabbitmq import channel, connection
+from user_image_api.config.rabbitmq import channel
 
 
 def publish_message(user_id, user_name, image_id, endpoint):

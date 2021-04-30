@@ -15,7 +15,9 @@ router = APIRouter()
              status_code=201,
              summary="Add User",
              response_model=UserOutput)
-def add_user(payload: UserInsertInput, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+def add_user(payload: UserInsertInput,
+             background_tasks: BackgroundTasks,
+             session: Session = Depends(get_db)):
     service = user.UserService(session)
     user_model = service.add(payload)
     background_tasks.add_task(publish_message, user_model.id, user_model.user_name, 0, "/add-user")
@@ -26,7 +28,8 @@ def add_user(payload: UserInsertInput, background_tasks: BackgroundTasks, sessio
             status_code=200,
             summary="Update User",
             response_model=UserOutput)
-def update_user(payload: UserUpdateInput, session: Session = Depends(get_db)):
+def update_user(payload: UserUpdateInput, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
     service = user.UserService(session)
     service.update(payload)
+    background_tasks.add_task(publish_message, payload.user_id, payload.user_name, 0, "/update-user")
     return UserOutput(user_id=payload.user_id)

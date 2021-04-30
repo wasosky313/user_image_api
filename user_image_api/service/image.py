@@ -16,7 +16,7 @@ class ImageService:
     def __init__(self, session: Session):
         self.image_repo = ImageRepository(session)
 
-    def add_image(self, payload: ImageInsertInput):
+    def add_image(self, payload: ImageInsertInput) -> Image:
         is_base_64(payload.image_base64)
         try:
             image_model = Image(payload.image_base64,
@@ -24,7 +24,7 @@ class ImageService:
                                 payload.user_id
                                 )
             image = self.image_repo.save(image_model)
-            return image.id
+            return image
         except IntegrityError:
             raise NoExistException()
         except SQLAlchemyError:
