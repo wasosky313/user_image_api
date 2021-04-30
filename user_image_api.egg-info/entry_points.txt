@@ -1,3 +1,0 @@
-[console_scripts]
-user_image_api = user_image_api.main:api
-
