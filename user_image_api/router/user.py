@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, Depends
 from sqlalchemy.orm import Session
 
 from user_image_api.config import VERSION
@@ -20,7 +20,10 @@ def add_user(payload: UserInsertInput,
              session: Session = Depends(get_db)):
     service = user.UserService(session)
     user_model = service.add(payload)
-    background_tasks.add_task(publish_message, user_model.id, user_model.user_name, 0, "/add-user")
+    background_tasks.add_task(publish_message,
+                              user_model.id,
+                              user_model.user_name,
+                              0, "/add-user")
     return UserOutput(user_id=user_model.id)
 
 
@@ -28,8 +31,13 @@ def add_user(payload: UserInsertInput,
             status_code=200,
             summary="Update User",
             response_model=UserOutput)
-def update_user(payload: UserUpdateInput, background_tasks: BackgroundTasks, session: Session = Depends(get_db)):
+def update_user(payload: UserUpdateInput,
+                background_tasks: BackgroundTasks,
+                session: Session = Depends(get_db)):
     service = user.UserService(session)
     service.update(payload)
-    background_tasks.add_task(publish_message, payload.user_id, payload.user_name, 0, "/update-user")
+    background_tasks.add_task(publish_message,
+                              payload.user_id,
+                              payload.user_name, 0,
+                              "/update-user")
     return UserOutput(user_id=payload.user_id)

@@ -1,6 +1,6 @@
-
-import json
+from loguru import logger
 import datetime
+import json
 
 from user_image_api.config.rabbitmq import channel
 
@@ -14,6 +14,7 @@ def publish_message(user_id, user_name, image_id, endpoint):
         'datetime': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
 
-    channel.basic_publish(exchange='', routing_key='user_image_api_logg', body=json.dumps(logged))
-    print(" [x] SENT MESSAGE TO QUEUE")
-
+    channel.basic_publish(exchange='',
+                          routing_key='user_image_api_logg',
+                          body=json.dumps(logged))
+    logger.info(" [x] SENT MESSAGE TO QUEUE")

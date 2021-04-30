@@ -23,7 +23,9 @@ def add_user_image(payload: ImageInsertInput,
                    session: Session = Depends(get_db)):
     service = image.ImageService(session)
     image_model = service.add_image(payload)
-    background_tasks.add_task(publish_message, payload.user_id, "0", image_model.id, "/add-user-image")
+    background_tasks.add_task(publish_message,
+                              payload.user_id, "0",
+                              image_model.id, "/add-user-image")
     return ImageOutput(image_id=image_model.id)
 
 
@@ -52,7 +54,9 @@ def list_user_images_thumb(user_id,
                            background_tasks: BackgroundTasks,
                            session: Session = Depends(get_db)):
     service = image.ImageService(session)
-    background_tasks.add_task(publish_message, user_id, "0", 0, "/list-user-images-thumbnails/<user_id>")
+    background_tasks.add_task(publish_message,
+                              user_id, "0", 0,
+                              "/list-user-images-thumbnails/<user_id>")
     return service.get_thumbnails(user_id)
 
 
@@ -64,7 +68,10 @@ def update_user_image(payload: UserImageUpdateInput,
                       session: Session = Depends(get_db)):
     service = image.ImageService(session)
     service.update_image(payload)
-    background_tasks.add_task(publish_message, payload.user_id, "0", payload.image_id, "/update-user-image")
+    background_tasks.add_task(publish_message,
+                              payload.user_id, "0",
+                              payload.image_id,
+                              "/update-user-image")
 
 
 @router.delete(f'/v{VERSION}/delete-user-image',
@@ -76,4 +83,7 @@ def delete_user_image(payload: DelUserImageInput,
                       session: Session = Depends(get_db)):
     service = image.ImageService(session)
     service.delete_image(payload.user_id, payload.image_id)
-    background_tasks.add_task(publish_message, payload.user_id, "0", payload.image_id, "/delete-user-image")
+    background_tasks.add_task(publish_message,
+                              payload.user_id, "0",
+                              payload.image_id,
+                              "/delete-user-image")

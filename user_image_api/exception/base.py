@@ -21,7 +21,7 @@ class UniqueException(ApiException):
 class SQLAlchemyException(ApiException):
     def __init__(self):
         message = "SQLAlchemy ERROR: COULD NOT CONNECT TO SERVER"
-        super().__init__(409, message)
+        super().__init__(404, message)
 
 
 class NoExistException(ApiException):
@@ -40,3 +40,9 @@ class TypeException(ApiException):
     def __init__(self):
         message = "ERROR: THE VALUE ISN'T int"
         super().__init__(401, message)
+
+
+class RabbitMQConnect(ApiException):
+    def __init__(self):
+        message = "CONNECTION ERROR: THE SERVER MQ IS DOWN"
+        super().__init__(503, message)
