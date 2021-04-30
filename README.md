@@ -14,6 +14,7 @@ User Image System
 5- docker build -t api .
 
 6- docker run -e DB_HOST='your host database address' -e MQ_CONNECTION='your host RabbitMQ address' -t api
+
 For Example docker run -e DB_HOST='192.168.1.104' -e MQ_CONNECTION='192.168.1.104' -t api 
 
 
