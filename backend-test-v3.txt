@@ -1,0 +1,45 @@
+## User Image System
+You are responsible for designing and implementation of a User Image System. This system shall store users images along the time, and as a banking application, it may be audited.
+Therefore the system may log every request for futher analysis. Below there are some high level definition of what should be created:
+
+# [0.][user-image-api]
+Create an API to manage Users Images
+	Endpoints:
+	 - /add-user
+		request : receives a User Name
+		response: returns the new User ID.
+	 - /update-user
+		request : receives a User ID and new User Name
+		response: returns the User ID.	
+	 - /add-user-image
+		request : receives a User ID and an image (Base 64 Format).
+		response: returns the new image ID.
+	 - /get-user-image
+		request : receives a User ID and an Image ID.
+		response: returns requested image (Base 64 Format)
+	 - /list-user-images-thumbnails
+		request : receives a User ID
+		response: return a list of user's images ID and (Base 64 Format) on maximum size of 100x100, and preserving aspect ratio.
+	 - /update-user-image		
+		request : receives a User ID, an Image ID, and a new image (Base 64 Format)
+	 - /delete-user-image		
+		request : receives a User ID and an Image ID
+
+
+
+# [1.][user-image-logs-service][OPTIONAL]
+All the endpoints requests above must be logged on a database. It should store the User ID, User Name, Image ID, Requested Endpoint and Timestamp.
+The communication to logs-service must be done through a MQ Queue. Create a service to store the logs of user-image-api. This service will subscribe to a MQ Queue and store the logs information on a database.
+
+
+# What should be delivered? (Due date = 30.04.2021)
+Solution Architecture Diagram
+Database Entity-Relationship Diagram
+Application Code on Git Repository 
+Docker-compose / Dockerfile for local deployment;
+
+# What will be evaluated?
+Code Structure/Organization
+Exception Handling
+Database Modeling
+
