@@ -9,13 +9,8 @@ User Image System
 
 3- cd user_image_api
 
-4- git checkout feature/add_api
+4- docker build -t api .
 
-5- docker build -t api .
-
-6- docker run -e DB_HOST='your host database address' -e MQ_CONNECTION='your host RabbitMQ address' --net=host -t api
+5- docker run -e DB_HOST='your host database address' -e MQ_CONNECTION='your host RabbitMQ address' --net=host -t api
 
 For Example docker run -e DB_HOST='192.168.1.104' -e MQ_CONNECTION='192.168.1.104' --net=host -t api 
-
-
-
